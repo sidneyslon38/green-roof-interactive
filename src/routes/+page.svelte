@@ -119,7 +119,7 @@ content="Over time, the property value of a building can also increase after a g
   </ArticleSlide>
 
   <ArticleSlide 
-  header="Are the number of green roofs increasing?">
+  header="How many neighborhoods have green roofs?">
   </ArticleSlide>
 
   <Scroller top={0.1} bottom={0.9} bind:progress={scrollProgress}>
@@ -181,17 +181,17 @@ content="Over time, the property value of a building can also increase after a g
               'fill-color': [
                 'step',
                 ['get', 'pointCount'],
-                '#e0f2f1', // 0–5
+                '#d0ffcc', // 0–5
                 5,
-                '#b3e5fc', // 5–15
+                '#92f089', // 5–15
                 15,
-                '#81d4fa', // 15–30
+                '#5ad04f', // 15–30
                 30,
-                '#4fc3f7', // 30–50
+                '#2da722', // 30–50
                 50,
-                '#29b6f6', // 50–75
+                '#117608', // 50–75
                 75,
-                '#039be5', // 75+
+                '#064800', // 75+
               ],
               'fill-opacity': ['case', ['==', ['get', 'pointCount'], 0], 0, 1.0],
               'fill-outline-color': ['case', ['==', ['get', 'pointCount'], 0], 'rgba(0,0,0,0)', '#123c0d'],
@@ -286,6 +286,7 @@ content="Over time, the property value of a building can also increase after a g
 
   section {
     width: 100%;
+    align-items: center;
     min-height: 120vh;
     padding: var(--spacing-lg) 0;
     transition: opacity 0.3s ease;

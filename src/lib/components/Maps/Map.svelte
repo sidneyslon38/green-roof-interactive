@@ -38,14 +38,20 @@ USAGE EXAMPLE:
     longitude = -74.006, // Map center longitude (default: NYC)
     latitude = 40.7128, // Map center latitude
     zoom = 10, // Initial zoom level (0–22)
+    minZoom = 0, // Minimum zoom level
+    maxZoom = 22, // Maximum zoom level
+    maxBounds = null, // Constrain panning to a bounding box: [[minLng, minLat], [maxLng, maxLat]]
+    fitBoundsAtMinZoom = false, // Auto-fit bounds to viewport at minZoom
     theme = 'liberty', // Basemap theme: 'liberty' | 'bright' | 'positron' | 'fiord' | 'dark'
     interactive = true, // Allow panning and zooming
+    dragPan = true, // Allow dragging to pan
     border = false, // Show an accent border around the map
     width = null, // Optional explicit width in pixels
     height = null, // Optional explicit height in pixels
     aspectRatio = '4 / 3', // Aspect ratio when no explicit height is given
     caption = '', // Optional caption below the map
     credit = 'OpenFreeMap / OpenStreetMap contributors',
+    mapOpacity = 1, // Opacity of the map background (0–1, higher = clearer)
     children, // Snippet for nested MapLayer components
   } = $props();
 
@@ -94,12 +100,74 @@ USAGE EXAMPLE:
           center: [longitude, latitude],
           zoom,
           interactive,
+          minZoom,
+          maxZoom,
+          maxBounds,
+          dragPan,
           attributionControl: credit ? false : { compact: true },
         });
 
         instance.on('style.load', () => {
           if (!mounted) return;
+
+          // Add filter layer right after basemap loads, before children render
+          try {
+            if (!instance.getSource('__filter-source')) {
+              instance.addSource('__filter-source', {
+                type: 'geojson',
+                data: {
+                  type: 'FeatureCollection',
+                  features: [
+                    {
+                      type: 'Feature',
+                      geometry: {
+                        type: 'Polygon',
+                        coordinates: [
+                          [
+                            [-180, -85],
+                            [180, -85],
+                            [180, 85],
+                            [-180, 85],
+                            [-180, -85],
+                          ],
+                        ],
+                      },
+                    },
+                  ],
+                },
+              });
+            }
+
+            if (!instance.getLayer('__basemap-filter')) {
+              instance.addLayer({
+                id: '__basemap-filter',
+                type: 'fill',
+                source: '__filter-source',
+                paint: {
+                  'fill-color': '#ffffff',
+                  'fill-opacity': 1 - mapOpacity,
+                },
+              });
+            }
+          } catch (e) {
+            console.warn('Could not add filter layer:', e);
+          }
+
           mapReady = true;
+
+          // Auto-capture bounds at minZoom if requested
+          if (fitBoundsAtMinZoom) {
+            instance.setZoom(minZoom);
+            setTimeout(() => {
+              const bounds = instance.getBounds();
+              instance.setMaxBounds([
+                [bounds.getWest(), bounds.getSouth()],
+                [bounds.getEast(), bounds.getNorth()],
+              ]);
+              // Restore original zoom
+              instance.setZoom(zoom);
+            }, 100);
+          }
         });
 
         map = instance;
@@ -136,13 +204,27 @@ USAGE EXAMPLE:
     });
   });
 
+  // Track basemap layer IDs and filter layer status
+  let filterLayerAdded = $state(false);
+
   // Reactively update the basemap style when theme changes
   $effect(() => {
     const url = styleUrl;
     if (!map || url === appliedStyleUrl) return;
     appliedStyleUrl = url;
     mapReady = false;
+    filterLayerAdded = false;
     map.setStyle(url);
+  });
+
+  // Update filter layer opacity reactively
+  $effect(() => {
+    if (!map || !mapReady) return;
+    try {
+      map.setPaintProperty('__basemap-filter', 'fill-opacity', 1 - mapOpacity);
+    } catch (e) {
+      // Filter layer might not exist yet
+    }
   });
 </script>
 

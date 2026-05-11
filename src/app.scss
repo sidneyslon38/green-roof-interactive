@@ -12,7 +12,7 @@
    =========================================== */
 :root {
   /* NYCity News Service Colors */
-  --color-accent: #0033a1; /* CUNY Blue (PMS 286) */
+  --color-accent: #118200; /* CUNY Blue (PMS 286) */
   --color-dark: #1a1a1a;
   --color-text: #333333;
   --color-white: #ffffff;
@@ -24,6 +24,10 @@
   /* CUNY Blue Gradient Colors */
   --color-cuny-blue-dark: #002266;
   --color-cuny-blue-light: #0066cc;
+
+  /* Map Colors */
+  --color-map-roof: #30c64b;
+  --color-map-roof-outline: #123c0d;
 
   /* Typography */
   --font-serif: 'PT Serif', Georgia, 'Times New Roman', Times, serif;

@@ -248,4 +248,51 @@ img {
   h3 {
     font-size: var(--font-size-xl);
   }
+
+  /* Prevent maps and overlays from being cut off on small screens */
+  body {
+    padding-bottom: 6rem; /* leave space for fixed controls */
+  }
+
+  .map-background,
+  .map-foreground {
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+  }
+
+  /* Ensure map containers don't exceed viewport; use vh so they scale on mobile */
+  .map-background > div,
+  .map-background > div > div,
+  .map-foreground section,
+  .map-foreground section > div {
+    max-height: 55vh;
+    height: auto;
+    min-height: 220px;
+  }
+
+  /* Make overlay text boxes full width and readable on mobile */
+  .text-overlay {
+    max-width: 100%;
+    padding: var(--spacing-md);
+    margin: 0 var(--spacing-xs);
+    background: rgba(255,255,255,0.98);
+  }
+
+  /* Geocoder / search container should not be fixed on small screens */
+  .geocoder-container {
+    position: static;
+    transform: none;
+    top: auto;
+    left: auto;
+    width: 100%;
+    max-width: 720px;
+    margin: var(--spacing-lg) auto 0 auto;
+    box-shadow: none;
+  }
+
+  /* Dropdown items are full-width and touch-friendly */
+  .neighborhood-item {
+    padding: calc(var(--spacing-md) + 4px) var(--spacing-lg);
+    font-size: var(--font-size-base);
+  }
 }

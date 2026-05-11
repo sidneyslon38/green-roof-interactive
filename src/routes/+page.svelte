@@ -65,17 +65,19 @@
   };
 </script>
 
-<div class="container">
+<div class="wide-container">
   <ArticleHeader
     headline="Here's What It Takes For Your Roof To Go Green"
     byline="Sidney Slon"
     pubDate="2026-05-11"
+    hero={true}
+    photoCredit="A green roof in New York City, 2015 / Lance Cheung, Wikimedia Commons"
   />
+</div>
+  <div class="container">
   <!-- Slide 1: Energy benefits -->
   <ArticleSlide 
-  photoFileName="{base}/photos/green_roof_photos/green_roof_header.jpg"
-  photoCredit="A green roof in New York City, 2015 / Lance Cheung, Wikimedia Commons"
-  photoPosition="top"
+  
   content="In the concrete jungle where dreams are made of, greenery is struggling to get its moment. It just might be over your head.<br><br>Green roofs are becoming increasingly relevant in New York City, especially since recent local laws now require new buildings, or old buildings replacing their roofs, to consider a green roof option. These rooftop green spaces exist on “less than 0.1%” of city buildings, according to Nature Conservancy estimates, but come with numerous benefits like flooding prevention, extreme heat mitigation and increased property values. If you’re a landlord or co-op board member, you’ve probably already heard of green roofs, but might not know where to start. Or, you might just be a city resident who wants to learn more about those nice looking roofs with plants growing on them.">
   </ArticleSlide>
 

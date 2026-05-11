@@ -258,4 +258,38 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
       line-height: var(--leading-normal);
     }
   }
+
+  @include mobile {
+    .calculator {
+      padding: var(--spacing-md);
+    }
+
+    .header h3 {
+      font-size: var(--font-size-xl);
+    }
+
+    .input-section {
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .input-box {
+      padding: var(--spacing-md);
+      flex: none;
+      width: 100%;
+    }
+
+    .input-box label input {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .result-box .range p {
+      font-size: var(--font-size-xl);
+    }
+
+    .result-box h4 {
+      font-size: var(--font-size-base);
+    }
+  }
 </style>

@@ -341,4 +341,32 @@ are structurally feasible based on historical construction standards.
       }
     }
   }
+
+  @include mobile {
+    .year-slider {
+      padding: var(--spacing-md);
+    }
+
+    .year-input .year-display {
+      font-size: var(--font-size-2xl);
+      padding: var(--spacing-sm);
+    }
+
+    .building-info {
+      padding: var(--spacing-sm);
+    }
+
+    .building-type h4 {
+      font-size: var(--font-size-base);
+    }
+
+    .capacity-badge {
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-xs) var(--spacing-sm);
+    }
+
+    .info-section.two-boxes {
+      grid-template-columns: 1fr; /* stack vertically on small screens */
+    }
+  }
 </style>

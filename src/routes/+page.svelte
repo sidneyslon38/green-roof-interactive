@@ -18,8 +18,29 @@
   // Map scroller state
   let scrollProgress = $state(0);
 
+  // Polygon map state for neighborhood zoom
+  let polygonMapLng = $state(-73.92);
+  let polygonMapLat = $state(40.74);
+  let polygonMapZoom = $state(9.7);
+
+  $effect(() => {
+    const handleNeighborhoodSelect = (event) => {
+      polygonMapLng = event.detail.longitude;
+      polygonMapLat = event.detail.latitude;
+      polygonMapZoom = event.detail.zoom;
+    };
+
+    window.addEventListener('neighborhood-selected', handleNeighborhoodSelect);
+
+    return () => {
+      window.removeEventListener('neighborhood-selected', handleNeighborhoodSelect);
+    };
+  });
+
   // Neighborhood search state
   let searchValue = $state('');
+  let selectedNeighborhood = $state(null);
+
   let neighborhoods = $derived.by(() => {
     if (!greenRoofsPolygons?.features) return [];
     const names = greenRoofsPolygons.features
@@ -49,7 +70,12 @@
       const bounds = bbox(feature);
       const [minLon, minLat, maxLon, maxLat] = bounds;
 
-      // Calculate center and zoom level
+      // Update selected neighborhood
+      selectedNeighborhood = {
+        name: ntaName,
+        greenRoofCount: feature.properties?.pointCount || 0
+      };
+
       // Update the polygon map to zoom to this neighborhood
       window.dispatchEvent(new CustomEvent('neighborhood-selected', {
         detail: {
@@ -164,9 +190,9 @@ content="Over time, the property value of a building can also increase after a g
 
       <div style="position: absolute; top: 0rem; left: 0; width: 100%; opacity: {scrollProgress}; transition: opacity 0.3s ease;">
         <Map
-          longitude={-73.92}
-          latitude={40.74}
-          zoom={9.7}
+          longitude={polygonMapLng}
+          latitude={polygonMapLat}
+          zoom={polygonMapZoom}
           minZoom={9.5}
           maxZoom={14.5}
           fitBoundsAtMinZoom={true}
@@ -195,7 +221,14 @@ content="Over time, the property value of a building can also increase after a g
                 75,
                 '#064800', // 75+
               ],
-              'fill-opacity': ['case', ['==', ['get', 'pointCount'], 0], 0, 1.0],
+              'fill-opacity': [
+                'case',
+                ['==', ['get', 'pointCount'], 0],
+                0,
+                selectedNeighborhood
+                  ? ['case', ['==', ['get', 'NTAName'], selectedNeighborhood.name], 1.0, 0.2]
+                  : 1.0,
+              ],
               'fill-outline-color': ['case', ['==', ['get', 'pointCount'], 0], 'rgba(0,0,0,0)', '#123c0d'],
             }}
           />
@@ -240,29 +273,42 @@ content="Over time, the property value of a building can also increase after a g
   </Scroller>
 
   {#if scrollProgress > 0.90}
-    <div class="geocoder-container" style="opacity: {Math.min(1, (scrollProgress - 0.90) / 0.10)}; transition: opacity 0.3s ease;">
-      <h2>Find Your Neighborhood</h2>
-      <div class="search-wrapper">
-        <SearchInput
-          label="Search neighborhoods"
-          placeholder="Start typing..."
-          bind:value={searchValue}
-        />
-        {#if searchValue && filteredNeighborhoods.length > 0}
-          <div class="neighborhood-dropdown">
-            {#each filteredNeighborhoods as neighborhood}
-              <button
-                class="neighborhood-item"
-                onclick={() => selectNeighborhood(neighborhood)}
-              >
-                {neighborhood}
-              </button>
-            {/each}
-          </div>
-        {/if}
+    {#if !selectedNeighborhood}
+      <div class="geocoder-container" style="opacity: {Math.min(1, (scrollProgress - 0.90) / 0.10)}; transition: opacity 0.3s ease;">
+        <h2>Find Your Neighborhood</h2>
+        <div class="search-wrapper">
+          <SearchInput
+            label="Search neighborhoods"
+            placeholder="Start typing..."
+            bind:value={searchValue}
+          />
+          {#if searchValue && filteredNeighborhoods.length > 0}
+            <div class="neighborhood-dropdown">
+              {#each filteredNeighborhoods as neighborhood}
+                <button
+                  class="neighborhood-item"
+                  onclick={() => selectNeighborhood(neighborhood)}
+                >
+                  {neighborhood}
+                </button>
+              {/each}
+            </div>
+          {/if}
+        </div>
       </div>
-    </div>
+    {:else}
+      <div class="neighborhood-info" style="opacity: {Math.min(1, (scrollProgress - 0.90) / 0.10)}; transition: opacity 0.3s ease;">
+        <h2>{selectedNeighborhood.name}</h2>
+        <p><strong>Green Roofs:</strong> {selectedNeighborhood.greenRoofCount}</p>
+        <button class="reset-button" onclick={() => { selectedNeighborhood = null; polygonMapLng = -73.92; polygonMapLat = 40.74; polygonMapZoom = 9.7; }}>
+          Back to Map
+        </button>
+      </div>
+    {/if}
   {/if}
+
+  <ArticleSlide></ArticleSlide>
+
 
 </div>
 
@@ -380,4 +426,49 @@ content="Over time, the property value of a building can also increase after a g
       border-bottom: 1px solid #eee;
     }
   }
-</style>
+
+  .neighborhood-info {
+    position: fixed;
+    /* move info box lower (closer to bottom) so there's more margin between map and box */
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 900px;
+    width: min(95%, 900px);
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 12px;
+    padding: calc(var(--spacing-lg) * 1.25);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.18);
+    z-index: 20;
+    pointer-events: auto;
+
+    h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 0 0 calc(var(--spacing-md) * 1.1) 0;
+      text-align: center;
+      font-size: 1.125rem;
+      color: var(--color-dark);
+    }
+  }
+
+  .reset-button {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #117608;
+    }
+  }</style>

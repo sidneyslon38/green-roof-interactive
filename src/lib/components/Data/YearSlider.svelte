@@ -17,16 +17,17 @@ are structurally feasible based on historical construction standards.
     if (y === 'Pre-1900' || y < 1968) {
       return {
         era: 'Pre-1900 to 1968',
+        typeHeader: '"Prior-Code" Construction includes buildings built before the 1968 Building Code was implemented.',
         large: {
-          type: 'Large Building (6+ stories)',
-          construction: 'Masonry, "over-engineered"',
+          type: "6+ stories (Apartments/Offices)",
+          construction: 'Heavy masonry, "over-engineered"',
           capacity: 'High',
           roofType: 'Heavy intensive green roof',
           notes: 'Often designed to support heavy loads.',
         },
         small: {
-          type: 'Small Building (Townhouse)',
-          construction: 'Timber roof joints',
+          type: "1-6 stories (Townhouse)",
+          construction: 'Timber roof joints, masonry walls',
           capacity: 'Low',
           roofType: 'Extensive or alternative system',
           notes: 'Not designed for heavy loads. Extensive roofs (5–25 psf) or other sustainable types recommended.',
@@ -35,7 +36,7 @@ are structurally feasible based on historical construction standards.
     } else if (y < 1980) {
       return {
         era: '1968–1980',
-        type: 'Modernized Construction',
+        type: '"Pre-Modern" Construction',
         construction: 'Standard steel and concrete',
         capacity: 'Moderate',
         roofType: 'Lightweight extensive (16–35 psf)',
@@ -44,16 +45,16 @@ are structurally feasible based on historical construction standards.
     } else if (y < 2002) {
       return {
         era: '1980–2002',
-        type: 'Modern Construction',
+        type: '"Transition Era" Construction',
         construction: 'Steel or concrete deck',
         capacity: 'Moderate to High',
         roofType: 'Semi-intensive (35–60 psf)',
-        notes: 'Baseline capacity typically accommodates semi-intensive systems without major reinforcement.',
+        notes: 'Building code was slowly transitioning to adopt modern efficiency standards. Baseline capacity typically accommodates semi-intensive systems without major reinforcement.',
       };
     } else if (y < 2019) {
       return {
         era: '2002–2019',
-        type: 'Energy Code Era',
+        type: 'Modern Energy Code Era',
         construction: 'Steel or concrete with 2002 NYSECCC standards',
         capacity: 'High',
         roofType: 'Lightweight extensive recommended',
@@ -62,7 +63,7 @@ are structurally feasible based on historical construction standards.
     } else {
       return {
         era: '2019–Present',
-        type: 'LL 92 & 94 Era',
+        type: '"Sustainable Roofing" Era',
         construction: 'Modern standards with pre-verified capacity',
         capacity: 'High',
         roofType: 'Pre-verified for green roof',
@@ -97,6 +98,7 @@ are structurally feasible based on historical construction standards.
   {#if hasInteracted}
     <div class="info-section" class:two-boxes={!!info.large}>
     <div class="era-badge">Your building was built: {year}</div>
+    <div class="type-header">{info.typeHeader}</div>
 
     {#if info.large}
       <div class="building-info">
@@ -253,6 +255,15 @@ are structurally feasible based on historical construction standards.
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
     width: fit-content;
+    grid-column: 1 / -1;
+  }
+
+  .type-header {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    color: var(--color-dark);
+    margin: 0;
     grid-column: 1 / -1;
   }
 

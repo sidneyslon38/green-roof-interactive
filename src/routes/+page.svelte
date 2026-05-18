@@ -469,7 +469,7 @@ content="<br>On the environmental side, they cool and clean the air, sequester c
    }
 
   .component-box {
-    background-color: var(--color-component-bg);
+    background-color: papayawhip;
     border: 8px double var(--color-accent);
     padding: var(--spacing-sm);
     padding-bottom: var(--spacing-xs);
@@ -489,7 +489,7 @@ content="<br>On the environmental side, they cool and clean the air, sequester c
   }
 
     .component-box-sm {
-    background-color: var(--color-component-bg);
+    background-color: papayawhip;
     border: 8px double var(--color-accent);
     padding: var(--spacing-2xl);
     margin: 0;

@@ -5,13 +5,15 @@ sources, or reporting process behind a story. Typically placed at the bottom
 of an article.
 -->
 <script>
-  let { title = 'How We Reported This Story', children } = $props();
+  let { title = 'How I Reported This Story', children } = $props();
 </script>
 
 <aside class="methodology-box" aria-label="Methodology">
   <h3 class="methodology-title">{title}</h3>
   <div class="methodology-body">
-    {@render children()}
+    {#if children}
+      {@render children()}
+    {/if}
   </div>
 </aside>
 

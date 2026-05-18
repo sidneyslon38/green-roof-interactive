@@ -293,7 +293,7 @@ USAGE EXAMPLE:
   }
 
   .credit {
-    font-size: var(--font-size-xs);
+    font-size: 8px;
     color: var(--color-medium-gray);
   }
 </style>

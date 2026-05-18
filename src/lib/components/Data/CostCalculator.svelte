@@ -35,8 +35,8 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
 
 <div class="calculator">
 <div class="header">
-<h3>Calculate Your New Energy Bill</h3>
-<p>Type in your current estimated energy bill to see how much a green roof could save you on heating and cooling.</p>
+<h2>Explore Green Roof Savings</h2>
+<p>Type in a bill amount to calculate green roof savings on heating and cooling.</p>
 </div>
   <div class="input-section">
     <div
@@ -83,7 +83,7 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
   {#if hasInteracted}
     <div class="results">
       <div class="result-box">
-        <h4>A green roof could save you...</h4>
+        <h4>A green roof could reduce costs by...</h4>
         <div class="range">
           <p class="min">${displaySavingsLow.toFixed(2)}</p>
           <p class="dash">–</p>
@@ -91,7 +91,7 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
         </div>
         <p class="label">{timeframe}</p>
         <p class="description">
-          Green roof savings are based on <a href="https://www.epa.gov/green-infrastructure/lower-building-energy-demands">Environmental Protection Agency (EPA)</a> data.
+          Green roof savings are based on <a href="https://www.epa.gov/green-infrastructure/lower-building-energy-demands">Environmental Protection Agency (EPA)</a> data, which estimates energy savings on heating and cooling by approximately 2 to 16%.
         </p>
       </div>
     </div>
@@ -111,9 +111,10 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
   .header {
     margin-bottom: var(--spacing-lg);
 
-    h3 {
-      font-family: var(--font-sans);
-      font-weight: var(--font-weight-normal);
+    h2 {
+      font-family: var(--font-serif);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-5xl);
       margin: 0 0 var(--spacing-md);
       color: var(--color-dark);
       text-align: center;
@@ -121,8 +122,9 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
 
     p {
       font-size: var(--font-size-base);
+      font-family: var(--font-sans);
       color: var(--color-text);
-      margin: 0;
+      margin-left: var(--spacing-lg);
     }
   }
 
@@ -148,7 +150,7 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
       flex: 1;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.02);
+        background-color: #9ab48a;
       }
 
       label {

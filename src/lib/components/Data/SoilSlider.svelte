@@ -7,6 +7,13 @@ green roofs are suitable at each depth range.
 -->
 <script>
   let depthIndex = $state(0); // 0-100 scale mapped to 2-12+ inches
+  let {
+    imageSrc = '',
+    imageSources = {},
+    imageCredit = '',
+    imageCredits = {},
+    imageAlt = 'Green roof illustration',
+  } = $props();
 
   // Map slider value to actual depth and display
   const depths = [
@@ -60,30 +67,51 @@ green roofs are suitable at each depth range.
   };
 
   const info = $derived(getInfo(currentDepth));
+  const activeImageSrc = $derived.by(() => {
+    if (imageSources?.[currentDepth.value]) return imageSources[currentDepth.value];
+    if (imageSources?.[currentDepth.type]) return imageSources[currentDepth.type];
+    return imageSrc;
+  });
+  const activeImageCredit = $derived.by(() => {
+    if (imageCredits?.[currentDepth.value]) return imageCredits[currentDepth.value];
+    if (imageCredits?.[currentDepth.type]) return imageCredits[currentDepth.type];
+    return imageCredit;
+  });
 </script>
 
 <div class="header">
-  <h3>Choose Your Desired Roof Type</h3>
+  <h2>Explore Green Roof Varieties</h2>
   <p>Slide to increase soil depth, and see how green roofs can differ.</p>
 </div>
 
 <div class="soil-slider">
-  <div class="slider-box">
-    <div class="depth-display">
-      <div class="depth-value">{currentDepth.display}</div>
-      <div class="depth-type">
-        <p>Soil Depth</p>
+  <div class="controls-row">
+    <div class="slider-box">
+      <div class="depth-display">
+        <div class="depth-value">{currentDepth.display}</div>
+        <div class="depth-type">
+          <p>Soil Depth</p>
+        </div>
       </div>
+
+      <input
+        type="range"
+        bind:value={depthIndex}
+        min="0"
+        max={depths.length - 1}
+        step="1"
+        class="vertical-slider"
+      />
     </div>
 
-    <input
-      type="range"
-      bind:value={depthIndex}
-      min="0"
-      max={depths.length - 1}
-      step="1"
-      class="vertical-slider"
-    />
+    {#if activeImageSrc}
+      <div class="image-panel">
+        <img src={activeImageSrc} alt={imageAlt} />
+        {#if activeImageCredit}
+          <p class="image-credit">{activeImageCredit}</p>
+        {/if}
+      </div>
+    {/if}
   </div>
 
   <div class="info-section">
@@ -127,9 +155,10 @@ green roofs are suitable at each depth range.
     margin-top: var(--spacing-lg);
     margin-bottom: var(--spacing-lg);
 
-    h3 {
-      font-family: var(--font-sans);
-      font-weight: var(--font-weight-medium);
+    h2 {
+      font-family: var(--font-serif);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-5xl);
       margin: 0 0 var(--spacing-md);
       color: var(--color-dark);
       text-align: center;
@@ -139,7 +168,7 @@ green roofs are suitable at each depth range.
       font-size: var(--font-size-base);
       font-family: var(--font-sans);
       color: var(--color-text);
-      margin: 0;
+      margin-left: var(--spacing-lg);
     }
   }
 
@@ -149,18 +178,34 @@ green roofs are suitable at each depth range.
     padding: var(--spacing-lg);
     margin: var(--spacing-lg) 0;
     display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    @include desktop {
+      min-height: 20px;
+    }
+  }
+
+  .controls-row {
+    display: flex;
     gap: var(--spacing-lg);
     align-items: stretch;
 
     @include mobile {
-      flex-direction: column;
+      align-items: stretch;
+      gap: var(--spacing-md);
+    }
+
+    @include desktop {
+      height: 360px; /* lock control row height on desktop */
     }
   }
 
   .slider-box {
     display: flex;
     flex-direction: column;
-    align-items: center;    justify-content: flex-end;    gap: var(--spacing-md);
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
     flex-shrink: 0;
     background: white;
     border: 2px solid var(--color-border);
@@ -169,14 +214,50 @@ green roofs are suitable at each depth range.
     width: 120px;
 
     @include mobile {
-      margin-bottom: var(--spacing-lg);
+      width: auto;
+      flex: 0 0 120px;
+      min-width: 120px;
+    }
+
+    @include desktop {
+      padding: var(--spacing-md);
+      width: 120px;
+      height: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+  }
+
+  .image-panel {
+    flex: 1;
+    min-width: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid var(--color-border);
+    align-self: stretch;
+
+    img {
+      display: block;
       width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @include desktop {
+      height: 100%;
+    }
+
+    @include mobile {
+      margin-left: auto;
+      width: auto;
     }
   }
 
   .depth-display {
     text-align: center;
     height: 120px;
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -203,16 +284,29 @@ green roofs are suitable at each depth range.
       align-items: center;
       flex-shrink: 0;
     }
+    @include desktop {
+      height: 80px;
+
+      .depth-value {
+        font-size: var(--font-size-3xl);
+      }
+
+      .depth-type {
+        font-size: var(--font-size-xs);
+      }
+    }
   }
 
   .vertical-slider {
     width: 8px;
-    height: 200px;
+    height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
     border-radius: 4px;
     background: var(--color-border);
     outline: none;
-    appearance: slider-vertical;
-    -webkit-appearance: slider-vertical;
+    writing-mode: vertical-lr;
+    direction: rtl;
     flex-shrink: 0;
     accent-color: var(--color-accent);
 
@@ -237,6 +331,10 @@ green roofs are suitable at each depth range.
       border: none;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
+
+    @include desktop {
+      max-height: 100%;
+    }
   }
 
   .info-section {
@@ -246,6 +344,12 @@ green roofs are suitable at each depth range.
     border: 1px solid var(--color-border);
     flex: 1;
     min-height: 420px;
+
+    @include desktop {
+      margin-top: 0;
+      max-height: calc(100% - 180px);
+      overflow: auto;
+    }
   }
 
   .info-header {

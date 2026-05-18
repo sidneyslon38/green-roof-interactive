@@ -113,7 +113,7 @@ export function load() {
     // Set to false to hide the NYCity News Service header
     showHeader: false,
     // Set to false to hide the site footer
-    showFooter: false,
+    showFooter: true,
     greenRoofs: greenRoofsPoints,
     greenRoofsPolygons: enrichedPolygons,
     polygonViewport: getPolygonViewport(enrichedPolygons),

@@ -228,8 +228,8 @@ USAGE EXAMPLE:
     z-index: 10;
   }
 
-  .hero .kicker,
-  .hero .headline {
+  .hero :global(.kicker),
+  .hero :global(.headline) {
     text-align: left;
   }
 
@@ -260,11 +260,135 @@ USAGE EXAMPLE:
   @include mobile {
     .hero {
       height: clamp(180px, 30vh, 300px);
-      align-items: flex-end; /* keep text lower on small screens */
+      align-items: center; /* vertically center overlay on small screens */
     }
 
     .hero-overlay {
       padding: var(--spacing-sm);
+    }
+  }
+
+  /* Mobile-only overrides: keep desktop behavior unchanged */
+  @include mobile {
+    .hero {
+      /* make the hero background fit the viewport width on mobile */
+      width: 100%;
+      margin-left: 0;
+      background-attachment: scroll; /* avoid fixed behavior on mobile */
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Ensure the headline, kicker, byline and pubdate remain white on top of the image */
+    .hero :global(.headline),
+    .hero :global(.kicker),
+    .hero :global(.byline),
+    .hero :global(.pubdate) {
+      color: var(--color-white);
+    }
+    
+    /* Additional mobile niceties: slightly darken hero image and center header */
+    .hero {
+      position: relative; /* ensure pseudo overlay sits on top of background */
+    }
+    
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.28);
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .hero-overlay {
+      /* bring overlay content above the darkening layer */
+      /* place overlay directly over the hero image */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0;
+      padding: var(--spacing-md) var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    /* center child components' internal text as well */
+    .hero-overlay :global(.kicker),
+    .hero-overlay :global(.headline),
+    .hero-overlay :global(.byline),
+    .hero-overlay :global(.pubdate) {
+      text-align: center;
+    }
+
+    /* Stronger, component-level selectors to override scoped styles */
+    .article-hero :global(.headline),
+    .article-hero :global(.kicker),
+    .article-hero :global(.byline),
+    .article-hero :global(.pubdate),
+    .article-hero :global(h1),
+    .article-hero :global(p.byline),
+    .article-hero :global(p.pubdate) {
+      color: var(--color-white) !important;
+      margin: 0 auto !important;
+    }
+  }
+
+  /* Apply the same mobile-only overrides for any viewport < 1800px */
+  @media (max-width: 1799px) {
+    .hero {
+      /* make the hero background fit the viewport width on smaller-than-wide screens */
+      width: 100%;
+      margin-left: 0;
+      background-attachment: scroll;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.28);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0;
+      padding: var(--spacing-md) var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero :global(.headline),
+    .hero :global(.kicker),
+    .hero :global(.byline),
+    .hero :global(.pubdate) {
+      color: var(--color-white) !important;
+    }
+
+    .hero-overlay :global(.kicker),
+    .hero-overlay :global(.headline),
+    .hero-overlay :global(.byline),
+    .hero-overlay :global(.pubdate) {
+      text-align: center;
     }
   }
 </style>

@@ -6,7 +6,18 @@ Renders a text section followed by an image/graphic.
 Handles {newParagraph} markers to split text into multiple paragraphs.
 -->
 <script>
+  import { base } from '$app/paths';
+
   let { header = '', content, photoFileName = '', photoCredit = '', photoPosition = 'bottom', children } = $props();
+
+  const imgSrc = $derived.by(() => {
+    if (!photoFileName) return '';
+    if (/^https?:\/\//.test(photoFileName)) return photoFileName;
+    if (photoFileName.startsWith('/')) {
+      return photoFileName.startsWith('/photos/') ? `${base}${photoFileName}` : `${base}/photos${photoFileName}`;
+    }
+    return `${base}/photos/${photoFileName}`;
+  });
 </script>
 
 <section class="slide">
@@ -16,7 +27,7 @@ Handles {newParagraph} markers to split text into multiple paragraphs.
 
   {#if photoPosition === 'top' && photoFileName}
     <div class="graphic">
-      <img src={photoFileName} alt="Article illustration" />
+      <img src={imgSrc} alt="Article illustration" />
       {#if photoCredit}
         <p class="photo-credit">{photoCredit}</p>
       {/if}
@@ -31,7 +42,7 @@ Handles {newParagraph} markers to split text into multiple paragraphs.
 
   {#if photoPosition === 'bottom' && photoFileName}
     <div class="graphic">
-      <img src={photoFileName} alt="Article illustration" />
+      <img src={imgSrc} alt="Article illustration" />
       {#if photoCredit}
         <p class="photo-credit">{photoCredit}</p>
       {/if}
@@ -57,8 +68,8 @@ Handles {newParagraph} markers to split text into multiple paragraphs.
   }
 
   .slide-header {
-    font-family: var(--font-sans);
-    font-size: var(--font-size-2xl);
+    font-family: var(--font-serif);
+    font-size: var(--font-size-4xl);
     font-weight: var(--font-weight-bold);
     color: var(--color-dark);
     margin: var(--spacing-xxl) 0 var(--spacing-lg) 0;
@@ -67,8 +78,8 @@ Handles {newParagraph} markers to split text into multiple paragraphs.
 
   .text {
     margin: 0 auto var(--spacing-2xl);
-    font-family: var(--font-sans);
-    font-size: var(--font-size-base);
+    font-family: var(--font-serif);
+    font-size: var(--font-size-lg);
     line-height: var(--leading-relaxed);
     color: var(--color-text);
 
@@ -97,6 +108,10 @@ Handles {newParagraph} markers to split text into multiple paragraphs.
     @include tablet {
       font-size: var(--font-size-lg);
       line-height: var(--leading-loose);
+    }
+    @include desktop {
+      font-size: var(--font-size-2xl);
+      line-height: var(--leading-relaxed);
     }
   }
 

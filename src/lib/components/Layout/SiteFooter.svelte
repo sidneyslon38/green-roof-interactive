@@ -9,6 +9,7 @@ USAGE EXAMPLE:
 <SiteFooter />
 -->
 <script>
+  import { base } from '$app/paths';
   import IconEmail from '$lib/components/Icons/IconEmail.svelte';
   import IconGitHub from '$lib/components/Icons/IconGitHub.svelte';
   import IconLinkedIn from '$lib/components/Icons/IconLinkedIn.svelte';
@@ -96,12 +97,12 @@ const currentYear = new Date().getFullYear();
         <nav aria-label="Footer navigation links">
           <ul class="footer-list">
             <li>
-              <a class="footer-link" href="/about-us">
+              <a class="footer-link" href={`${base}/`}>
                 <span>ABOUT US</span>
               </a>
             </li>
             <li>
-              <a class="footer-link" href="/contact-us">
+              <a class="footer-link" href={`${base}/`}>
                 <span>CONTACT US</span>
               </a>
             </li>

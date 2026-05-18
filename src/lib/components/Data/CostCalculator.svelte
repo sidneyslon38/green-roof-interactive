@@ -91,7 +91,7 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
         </div>
         <p class="label">{timeframe}</p>
         <p class="description">
-          Green roof savings are based on <a href="https://www.epa.gov/green-infrastructure/lower-building-energy-demands">Environmental Protection Agency (EPA)</a> data, which estimates energy savings on heating and cooling by approximately 2 to 16%.
+          Green roof savings are based on <a href="https://www.epa.gov/green-infrastructure/lower-building-energy-demands">Environmental Protection Agency (EPA)</a> data, which estimates reductions in energy costs by approximately 2.2 to 16.7%.
         </p>
       </div>
     </div>

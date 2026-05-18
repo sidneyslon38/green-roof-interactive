@@ -65,7 +65,7 @@ const currentYear = new Date().getFullYear();
     <div class="footer-container">
       <div class="footer-col">
         <a
-          class="footer-link"
+          class="footer-link sr-only-link"
           href="https://journalism.cuny.edu/"
           target="_blank"
           rel="noopener noreferrer"
@@ -97,12 +97,12 @@ const currentYear = new Date().getFullYear();
         <nav aria-label="Footer navigation links">
           <ul class="footer-list">
             <li>
-              <a class="footer-link" href={`${base}/`}>
+              <a class="footer-link sr-only-link" href={`${base}/`}>
                 <span>ABOUT US</span>
               </a>
             </li>
             <li>
-              <a class="footer-link" href={`${base}/`}>
+              <a class="footer-link sr-only-link" href={`${base}/`}>
                 <span>CONTACT US</span>
               </a>
             </li>
@@ -176,6 +176,18 @@ const currentYear = new Date().getFullYear();
 
   .footer-link:hover {
     color: var(--color-white);
+  }
+
+  .sr-only-link {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .footer-link :global(svg) {

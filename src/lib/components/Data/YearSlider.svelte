@@ -283,7 +283,7 @@ are structurally feasible based on historical construction standards.
       text-align: center;
       padding: var(--spacing-md);
       background: white;
-      border-radius: var(--border-radius);
+      border-radius: 20px;
       border: 1px solid var(--color-border);
     }
 
@@ -394,6 +394,7 @@ are structurally feasible based on historical construction standards.
     padding: var(--spacing-md);
     border-radius: var(--border-radius);
     border: 1px solid var(--color-border);
+    border-radius: 20px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(140px, 220px);
     gap: var(--spacing-md);

@@ -139,7 +139,7 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
     .input-box {
       background: white;
       border: 1px solid var(--color-border);
-      border-radius: var(--border-radius);
+      border-radius: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -216,7 +216,7 @@ and heating/cooling split (default 56% heating, 1% cooling per EIA data).
   .result-box {
     background: white;
     padding: var(--spacing-md);
-    border-radius: var(--border-radius);
+    border-radius: 20px;
     border: 1px solid var(--color-border);
     text-align: center;
 

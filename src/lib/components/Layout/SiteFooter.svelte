@@ -63,6 +63,15 @@ const currentYear = new Date().getFullYear();
   <div class="footer-main">
     <div class="footer-container">
       <div class="footer-col">
+        <a
+          class="footer-link"
+          href="https://journalism.cuny.edu/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Craig Newmark Graduate School of Journalism at CUNY"
+        >
+          <span>CUNY Journalism</span>
+        </a>
         <h3 class="footer-heading">Contact</h3>
         {#if contacts.length > 0}
           <nav aria-label="Footer contact links">
@@ -84,6 +93,20 @@ const currentYear = new Date().getFullYear();
             </ul>
           </nav>
         {/if}
+        <nav aria-label="Footer navigation links">
+          <ul class="footer-list">
+            <li>
+              <a class="footer-link" href="/about-us">
+                <span>ABOUT US</span>
+              </a>
+            </li>
+            <li>
+              <a class="footer-link" href="/contact-us">
+                <span>CONTACT US</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>

@@ -346,8 +346,8 @@ content="<br>On the environmental side, they cool and clean the air, sequester c
   <ArticleSlide 
   header="Looking to learn more about green roofs?"
   content="For New Yorkers looking to start the process, an easy first step is the DEP <a href='https://www.nyc.gov/site/dep/water/green-infrastructure.page' target='_blank'>website</a>, which offers grant workshops to help determine eligibility and installation advice.<br><br>Installing a green roof might feel daunting and costly, but it’s also adding to a small, growing list of rooftop greenspaces that offer a tremendous amount of benefits to the city and its residents.<br><br>"
-    photoFileName="/green_roof_photos/bird gif.gif"
-    photoCredit="Building gif / Sidney Slon"
+    photoFileName="/green_roof_photos/rooftop-garden.jpg"
+    photoCredit="Rooftop garden / Wikimedia Commons"
   >
   </ArticleSlide>
 
